@@ -1,0 +1,26 @@
+{
+  "name": "motorist",
+  "version": "0.0.1",
+  "homepage": "https://github.com/Open-Technologies/motorist",
+  "authors": [
+    "Open-Technologies"
+  ],
+  "description": "JavaScript game",
+  "main": "server.js",
+  "keywords": [
+    "motorist",
+    "js",
+    "javascript"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "three.js": "~0.71.0"
+  }
+}
