@@ -4,7 +4,9 @@ var cleanLib = require('./gulp/cleanLib');
 var buildStatic = require('./gulp/buildStatic');
 var createBundles = require('./gulp/createBundles');
 
-gulp.task('default', ['buildStatic', 'createBundles']);
+gulp.task('default', ['buildStatic', 'createBundles'], function () {
+  require('./server');
+});
 
 gulp.task('buildStatic', ['cleanLib'], buildStatic);
 gulp.task('createBundles', ['detectErrors'], createBundles);

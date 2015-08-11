@@ -5,7 +5,7 @@ var source = require('vinyl-source-stream');
 
 function createBundles() {
   return browserify({
-      entries: './src/game.jsx',
+      entries: './src/main.jsx',
       debug: true
     })
     .transform(babelify)

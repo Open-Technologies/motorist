@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Game = React.createClass({
+const MapEditor = React.createClass({
   render() {
     return (
       <div className="tileMenu">
@@ -11,4 +11,4 @@ const Game = React.createClass({
   }
 });
 
-React.render(<Game/>, document.body);
+export default MapEditor;
