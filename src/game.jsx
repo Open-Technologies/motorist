@@ -3,7 +3,10 @@ import React from 'react';
 const Game = React.createClass({
   render() {
     return (
-      <h1>HELLO</h1>
+      <div className="tileMenu">
+        <img className="tileMenu__tile" src="images/textures/GTATIL1_204.bmp"/>
+        <div className="clear"/>
+      </div>
     );
   }
 });
