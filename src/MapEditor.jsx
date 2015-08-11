@@ -1,6 +1,10 @@
 import React from 'react';
+import Render from './Render';
 
 const MapEditor = React.createClass({
+  componentDidMount() {
+    new Render();
+  },
   render() {
     return (
       <div className="tileMenu">
