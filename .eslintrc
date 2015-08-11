@@ -1,18 +1,23 @@
-plugins: ["react"]
-
-ecmaFeatures:
-  jsx: true
-  generators: true
-  modules: true
-
-env:
-  browser: true
-  jquery: true
-  node: true
-  es6: true
-
-rules:
-  quotes: [2, "single"]
-  strict: [2, "global"]
-  no-underscore-dangle: 0
-  consistent-return: 0
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "ecmaFeatures": {
+    "jsx": true,
+    "modules": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "quotes": [2, "single"],
+    "strict": [2, "global"],
+    "no-underscore-dangle": 0,
+    "no-unused-expressions": 0,
+    "react/jsx-no-undef": 2,
+    "consistent-return": 0
+  }
+}
