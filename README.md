@@ -1,4 +1,4 @@
-# Motorist
+# Motorist [![Build Status](http://img.shields.io/travis/terinjokes/gulp-license.svg?style=flat)](https://travis-ci.org/terinjokes/gulp-license)
 
 JavaScript game
 
