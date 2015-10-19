@@ -1,4 +1,4 @@
-# Motorist [![Build Status](http://img.shields.io/travis/Open-Technologies/motorist.svg?style=flat)](https://travis-ci.org/Open-Technologies/motorist)
+# Motorist [![Build Status](http://img.shields.io/travis/Smert/motorist.svg?style=flat)](https://travis-ci.org/Smert/motorist)
 
 JavaScript game
 
