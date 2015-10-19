@@ -2,6 +2,9 @@ import React from 'react';
 import Render from './Render';
 import materials from './materials';
 
+const WHEEL_ZOOM_SENSITIVITY = 0.01;
+const WHEEL_ZOOM_MIN_LIMIT = 2;
+const WHEEL_ZOOM_MAX_LIMIT = 25;
 const tiles = [
   'GTATIL1_197', 'GTATIL1_198', 'GTATIL1_199', 'GTATIL1_200', 'GTATIL1_201', 'GTATIL1_202', 'GTATIL1_204',
   'GTATIL1_206', 'GTATIL1_209', 'GTATIL1_212', 'GTATIL1_219', 'GTATIL1_220', 'GTATIL1_221', 'GTATIL1_233',
@@ -26,18 +29,19 @@ const MapEditor = React.createClass({
     this.state.render.domElement.addEventListener('click', this.onClick);
     this.state.render.domElement.addEventListener('mousemove', this.onMouseMove);
     this.state.render.domElement.addEventListener('mouseout', this.onMouseOut);
+    this.state.render.domElement.addEventListener('wheel', this.onWheel);
   },
   componentWillUnmount() {
     this.state.render.domElement.removeEvenListener('click', this.onClick);
     this.state.render.domElement.removeEvenListener('mousemove', this.onMouseMove);
     this.state.render.domElement.removeEvenListener('mouseout', this.onMouseOut);
+    this.state.render.domElement.removeEvenListener('wheel', this.onWheel);
   },
   onClick(e) {
-    this.updateRollOverPosition(e);
     const newTile = this.state.render.addTile({
       material: materials.GTATIL1_204
     });
-    newTile.position.copy(this.state.rollOverPosition);
+    newTile.position.copy(this.getRollOverPosition(e));
   },
   onMouseMove(e) {
     if (!this.state.rollOverObject) {
@@ -49,8 +53,7 @@ const MapEditor = React.createClass({
     }
 
     // Update position
-    this.updateRollOverPosition(e);
-    this.state.rollOverObject.position.copy(this.state.rollOverPosition);
+    this.state.rollOverObject.position.copy(this.getRollOverPosition(e));
   },
   onMouseOut() {
     // Remove rollOver
@@ -60,11 +63,21 @@ const MapEditor = React.createClass({
     this.state.render.removeObject(this.state.rollOverObject);
     this.state.rollOverObject = null;
   },
+  onWheel(e) {
+    this.state.render.camera.position.z += e.deltaY * WHEEL_ZOOM_SENSITIVITY;
+    if (this.state.render.camera.position.z < WHEEL_ZOOM_MIN_LIMIT) {
+      this.state.render.camera.position.z = WHEEL_ZOOM_MIN_LIMIT;
+    }
+    if (this.state.render.camera.position.z > WHEEL_ZOOM_MAX_LIMIT) {
+      this.state.render.camera.position.z = WHEEL_ZOOM_MAX_LIMIT;
+    }
+  },
 
-  updateRollOverPosition(e) {
-    this.state.rollOverPosition = this.state.render.getIntersectionWithZ(e.clientX, e.clientY, 0);
-    this.state.rollOverPosition.x = Math.floor(this.state.rollOverPosition.x + 0.5);
-    this.state.rollOverPosition.y = Math.floor(this.state.rollOverPosition.y + 0.5);
+  getRollOverPosition(e) {
+    const rollOverPosition = this.state.render.getIntersectionWithZ(e.clientX, e.clientY, 0);
+    rollOverPosition.x = Math.floor(rollOverPosition.x + 0.5);
+    rollOverPosition.y = Math.floor(rollOverPosition.y + 0.5);
+    return rollOverPosition;
   },
 
   render() {
