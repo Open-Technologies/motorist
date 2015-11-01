@@ -26,25 +26,20 @@ class Render {
     this._scene.remove(object);
   }
 
-  getIntersectionWithZ(mouseX, mouseY, z) {
-    const mouse = new THREE.Vector2(
-      (mouseX / window.innerWidth) * 2 - 1,
-      -(mouseY / window.innerHeight) * 2 + 1
-    );
-    const raycaster = new THREE.Raycaster();
-    raycaster.setFromCamera(mouse, this.camera);
-    var nPos = new THREE.Vector3(0, 0, z);
-    var n = new THREE.Vector3(0, 0, 1);
-    var rayPos = raycaster.ray.origin.clone();
-    var ray = raycaster.ray.direction.clone();
-    var t = - rayPos.sub(nPos).dot(n) / ray.dot(n);
-    var p = rayPos.add(ray.multiplyScalar(t));
-    return p;
+  getIntersectionWithZ(mousePos, z) {
+    const mouseX = (mousePos.x / window.innerWidth) * 2 - 1;
+    const mouseY = -(mousePos.y / window.innerHeight) * 2 + 1;
+    const planePos = new THREE.Vector3(0, 0, z);
+    const planeNormal = new THREE.Vector3(0, 0, 1);
+    const origin = new THREE.Vector3().setFromMatrixPosition(this.camera.matrixWorld);
+    const direction = new THREE.Vector3(mouseX, mouseY, 0.5).unproject(this.camera).sub(origin).normalize();
+    const distance = - this.camera.position.clone().sub(planePos).dot(planeNormal) / direction.dot(planeNormal);
+    return this.camera.position.clone().add(direction.multiplyScalar(distance));
   }
 
   _renderLoop() {
-    requestAnimationFrame(::this._renderLoop);
     this._renderer.render(this._scene, this.camera);
+    requestAnimationFrame(::this._renderLoop);
   }
 }
 
