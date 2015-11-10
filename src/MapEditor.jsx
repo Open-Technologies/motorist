@@ -78,6 +78,7 @@ const MapEditor = React.createClass({
   },
   onMouseOut() {
     this.removeRollOverObject();
+    this.stopCameraDragging();
   },
   onWheel(e) {
     this.state.render.camera.position.z += e.deltaY * WHEEL_ZOOM_SENSITIVITY;
@@ -92,17 +93,13 @@ const MapEditor = React.createClass({
     this.state.prevMousePos = new THREE.Vector2(e.clientX, e.clientY);
   },
   onMouseUp(e) {
-    this.state.prevMousePos = null;
-
-    if (this.state.dragging) {
-      this.state.dragging = false;
-      return;
+    if (!this.state.dragging) {
+      const newTile = this.state.render.addTile({
+        material: materials.GTATIL1_204
+      });
+      newTile.position.copy(this.getRollOverPos(e));
     }
-
-    const newTile = this.state.render.addTile({
-      material: materials.GTATIL1_204
-    });
-    newTile.position.copy(this.getRollOverPos(e));
+    this.stopCameraDragging();
   },
   getRollOverPos(e) {
     const rollOverPos = this.state.render.getIntersectionWithZ(new THREE.Vector2(e.clientX, e.clientY), 0);
@@ -116,6 +113,10 @@ const MapEditor = React.createClass({
     }
     this.state.render.removeObject(this.state.rollOverObject);
     this.state.rollOverObject = null;
+  },
+  stopCameraDragging() {
+    this.state.prevMousePos = null;
+    this.state.dragging = false;
   },
   render() {
     return (
