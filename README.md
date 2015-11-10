@@ -30,5 +30,3 @@ gulp
 ```sh
 npm start
 ```
-
-[http://localhost:8080/editor](http://localhost:8080/editor) - Map editor
