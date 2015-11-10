@@ -2,6 +2,8 @@
 
 JavaScript game
 
+[http://smert.github.io/motorist/#/editor](http://smert.github.io/motorist/#/editor)
+
 ## Used
 
 * [ThreeJS](http://threejs.org/)

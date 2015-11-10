@@ -11,7 +11,7 @@ function createBundles() {
     .transform(babelify)
     .bundle()
     .pipe(source('game.js'))
-    .pipe(gulp.dest('./lib/js'));
+    .pipe(gulp.dest('./_game/js'));
 }
 
 module.exports = createBundles;

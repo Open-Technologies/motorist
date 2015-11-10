@@ -1,14 +1,14 @@
 var gulp = require('gulp');
 var detectErrors = require('./gulp/detectErrors');
-var cleanLib = require('./gulp/cleanLib');
+var clean = require('./gulp/clean');
 var buildStatic = require('./gulp/buildStatic');
 var createBundles = require('./gulp/createBundles');
+var deploy = require('./gulp/deploy');
 
-gulp.task('default', ['buildStatic', 'createBundles'], function () {
-  require('./server');
-});
+gulp.task('default', ['buildStatic', 'createBundles']);
+gulp.task('deploy', ['default'], deploy);
 
-gulp.task('buildStatic', ['cleanLib'], buildStatic);
+gulp.task('buildStatic', ['clean'], buildStatic);
 gulp.task('createBundles', ['detectErrors'], createBundles);
-gulp.task('detectErrors', ['cleanLib'], detectErrors);
-gulp.task('cleanLib', cleanLib);
+gulp.task('detectErrors', ['clean'], detectErrors);
+gulp.task('clean', clean);
