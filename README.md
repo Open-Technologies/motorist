@@ -2,14 +2,14 @@
 
 JavaScript game
 
-[http://smert.github.io/motorist/#/editor](http://smert.github.io/motorist/#/editor)
+[http://smert.github.io/motorist/editor.html](http://smert.github.io/motorist/editor.html)
 
 ## Used
 
 * [ThreeJS](http://threejs.org/)
 * [React](http://facebook.github.io/react/)
 * [Babel](https://babeljs.io/)
-* [Browserify](http://browserify.org/)
+* [Webpack](https://webpack.github.io/)
 
 ## Commands
 
@@ -19,14 +19,16 @@ JavaScript game
 npm i
 ```
 
-### Build and run
+### Build
 
 ```sh
-gulp
+npm run build
 ```
 
-### Run
+The game will be in the folder `_site`
+
+### Deploy to gh-pages
 
 ```sh
-npm start
+npm run deploy
 ```

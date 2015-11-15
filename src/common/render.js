@@ -1,11 +1,18 @@
+import THREE from 'three.js';
+
+const CAMERA_FOV = 75;
+const CAMERA_NEAR = 0.1;
+const CAMERA_FAR = 1000;
+const CLEAR_COLOR = 0xffffff;
+
 class Render {
   constructor() {
-    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    this.camera = new THREE.PerspectiveCamera(CAMERA_FOV, window.innerWidth / window.innerHeight, CAMERA_NEAR, CAMERA_FAR);
     this._scene = new THREE.Scene();
     this._renderer = new THREE.WebGLRenderer();
 
     this._renderer.setSize(window.innerWidth, window.innerHeight);
-    this._renderer.setClearColor(0xffffff);
+    this._renderer.setClearColor(CLEAR_COLOR);
 
     document.body.appendChild(this._renderer.domElement);
 
@@ -32,7 +39,7 @@ class Render {
     const planePos = new THREE.Vector3(0, 0, z);
     const planeNormal = new THREE.Vector3(0, 0, 1);
     const origin = new THREE.Vector3().setFromMatrixPosition(this.camera.matrixWorld);
-    const direction = new THREE.Vector3(mouseX, mouseY, 0.5).unproject(this.camera).sub(origin).normalize();
+    const direction = new THREE.Vector3(mouseX, mouseY, 1).unproject(this.camera).sub(origin).normalize();
     const distance = - this.camera.position.clone().sub(planePos).dot(planeNormal) / direction.dot(planeNormal);
     return this.camera.position.clone().add(direction.multiplyScalar(distance));
   }
@@ -43,4 +50,4 @@ class Render {
   }
 }
 
-export default Render;
+export default new Render();

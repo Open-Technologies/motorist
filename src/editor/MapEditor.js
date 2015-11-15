@@ -1,11 +1,13 @@
 import React from 'react';
-import Render from './Render';
-import materials from './materials';
+import THREE from 'three.js';
+import render from '../common/render';
+import materials from '../common/materials';
 
 const WHEEL_ZOOM_SENSITIVITY = 0.01;
 const WHEEL_ZOOM_MIN_LIMIT = 2;
 const WHEEL_ZOOM_MAX_LIMIT = 25;
 const MOUSE_DRAG_MIN_OFFSET = 10;
+const TILE_SIZE = 1;
 const tiles = [
   'GTATIL1_197', 'GTATIL1_198', 'GTATIL1_199', 'GTATIL1_200', 'GTATIL1_201', 'GTATIL1_202', 'GTATIL1_204',
   'GTATIL1_206', 'GTATIL1_209', 'GTATIL1_212', 'GTATIL1_219', 'GTATIL1_220', 'GTATIL1_221', 'GTATIL1_233',
@@ -19,7 +21,6 @@ const tiles = [
 const MapEditor = React.createClass({
   getInitialState() {
     return {
-      render: null,
       rollOverPos: null,
       rollOverObject: null,
       prevMousePos: null,
@@ -27,20 +28,19 @@ const MapEditor = React.createClass({
     };
   },
   componentDidMount() {
-    this.state.render = new Render();
-    this.state.render.camera.position.z = 5;
-    this.state.render.domElement.addEventListener('mousemove', this.onMouseMove);
-    this.state.render.domElement.addEventListener('mouseout', this.onMouseOut);
-    this.state.render.domElement.addEventListener('wheel', this.onWheel);
-    this.state.render.domElement.addEventListener('mousedown', this.onMouseDown);
-    this.state.render.domElement.addEventListener('mouseup', this.onMouseUp);
+    render.camera.position.z = 5;
+    render.domElement.addEventListener('mousemove', this.onMouseMove);
+    render.domElement.addEventListener('mouseout', this.onMouseOut);
+    render.domElement.addEventListener('wheel', this.onWheel);
+    render.domElement.addEventListener('mousedown', this.onMouseDown);
+    render.domElement.addEventListener('mouseup', this.onMouseUp);
   },
   componentWillUnmount() {
-    this.state.render.domElement.removeEvenListener('mousemove', this.onMouseMove);
-    this.state.render.domElement.removeEvenListener('mouseout', this.onMouseOut);
-    this.state.render.domElement.removeEvenListener('wheel', this.onWheel);
-    this.state.render.domElement.removeEvenListener('mousedown', this.onMouseDown);
-    this.state.render.domElement.removeEvenListener('mouseup', this.onMouseUp);
+    render.domElement.removeEvenListener('mousemove', this.onMouseMove);
+    render.domElement.removeEvenListener('mouseout', this.onMouseOut);
+    render.domElement.removeEvenListener('wheel', this.onWheel);
+    render.domElement.removeEvenListener('mousedown', this.onMouseDown);
+    render.domElement.removeEvenListener('mouseup', this.onMouseUp);
   },
   onMouseMove(e) {
     if (this.state.prevMousePos) {
@@ -54,10 +54,10 @@ const MapEditor = React.createClass({
 
       if (this.state.dragging) {
         // Move the camera
-        const prevItersection = this.state.render.getIntersectionWithZ(this.state.prevMousePos, 0);
-        const intersection = this.state.render.getIntersectionWithZ(mousePos, 0);
+        const prevItersection = render.getIntersectionWithZ(this.state.prevMousePos, 0);
+        const intersection = render.getIntersectionWithZ(mousePos, 0);
         const offset = prevItersection.sub(intersection);
-        this.state.render.camera.position.add(offset);
+        render.camera.position.add(offset);
         this.state.prevMousePos = mousePos;
         this.state.dragging = true;
         this.removeRollOverObject();
@@ -70,7 +70,7 @@ const MapEditor = React.createClass({
       const material = materials.GTATIL1_204.clone();
       material.opacity = 0.5;
       material.transparent = true;
-      this.state.rollOverObject = this.state.render.addTile({material});
+      this.state.rollOverObject = render.addTile({material});
     }
 
     // Update position of RollOver object
@@ -81,12 +81,12 @@ const MapEditor = React.createClass({
     this.stopCameraDragging();
   },
   onWheel(e) {
-    this.state.render.camera.position.z += e.deltaY * WHEEL_ZOOM_SENSITIVITY;
-    if (this.state.render.camera.position.z < WHEEL_ZOOM_MIN_LIMIT) {
-      this.state.render.camera.position.z = WHEEL_ZOOM_MIN_LIMIT;
+    render.camera.position.z += e.deltaY * WHEEL_ZOOM_SENSITIVITY;
+    if (render.camera.position.z < WHEEL_ZOOM_MIN_LIMIT) {
+      render.camera.position.z = WHEEL_ZOOM_MIN_LIMIT;
     }
-    if (this.state.render.camera.position.z > WHEEL_ZOOM_MAX_LIMIT) {
-      this.state.render.camera.position.z = WHEEL_ZOOM_MAX_LIMIT;
+    if (render.camera.position.z > WHEEL_ZOOM_MAX_LIMIT) {
+      render.camera.position.z = WHEEL_ZOOM_MAX_LIMIT;
     }
   },
   onMouseDown(e) {
@@ -94,7 +94,7 @@ const MapEditor = React.createClass({
   },
   onMouseUp(e) {
     if (!this.state.dragging) {
-      const newTile = this.state.render.addTile({
+      const newTile = render.addTile({
         material: materials.GTATIL1_204
       });
       newTile.position.copy(this.getRollOverPos(e));
@@ -102,16 +102,17 @@ const MapEditor = React.createClass({
     this.stopCameraDragging();
   },
   getRollOverPos(e) {
-    const rollOverPos = this.state.render.getIntersectionWithZ(new THREE.Vector2(e.clientX, e.clientY), 0);
-    rollOverPos.x = Math.floor(rollOverPos.x + 0.5);
-    rollOverPos.y = Math.floor(rollOverPos.y + 0.5);
+    const rollOverPos = render.getIntersectionWithZ(new THREE.Vector2(e.clientX, e.clientY), 0);
+    const centerOffset = TILE_SIZE / 2;
+    rollOverPos.x = Math.floor(rollOverPos.x + centerOffset);
+    rollOverPos.y = Math.floor(rollOverPos.y + centerOffset);
     return rollOverPos;
   },
   removeRollOverObject() {
     if (!this.state.rollOverObject) {
       return;
     }
-    this.state.render.removeObject(this.state.rollOverObject);
+    render.removeObject(this.state.rollOverObject);
     this.state.rollOverObject = null;
   },
   stopCameraDragging() {
