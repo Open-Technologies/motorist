@@ -23743,7 +23743,6 @@
 	var WHEEL_ZOOM_MAX_LIMIT = 25;
 	var MOUSE_DRAG_MIN_OFFSET = 10;
 	var TILE_SIZE = 1;
-	var tiles = ['GTATIL1_197', 'GTATIL1_198', 'GTATIL1_199', 'GTATIL1_200', 'GTATIL1_201', 'GTATIL1_202', 'GTATIL1_204', 'GTATIL1_206', 'GTATIL1_209', 'GTATIL1_212', 'GTATIL1_219', 'GTATIL1_220', 'GTATIL1_221', 'GTATIL1_233', 'GTATIL1_234', 'GTATIL1_247', 'GTATIL1_250', 'GTATIL1_254', 'GTATIL1_265', 'GTATIL1_266', 'GTATIL1_270', 'GTATIL1_271', 'GTATIL1_272', 'GTATIL1_274', 'GTATIL1_275', 'GTATIL1_276', 'GTATIL1_277', 'GTATIL1_278', 'GTATIL1_279', 'GTATIL1_280', 'GTATIL1_289', 'GTATIL1_291', 'GTATIL1_294', 'GTATIL1_295', 'GTATIL1_303', 'GTATIL1_304', 'GTATIL1_315', 'GTATIL1_316', 'GTATIL1_322', 'GTATIL1_323', 'GTATIL1_329', 'GTATIL1_330', 'GTATIL1_331', 'GTATIL1_338'];
 
 	var MapEditor = _react2.default.createClass({
 	  displayName: 'MapEditor',
@@ -23848,15 +23847,7 @@
 	    this.state.dragging = false;
 	  },
 	  render: function render() {
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'tileMenu' },
-	      tiles.map(function (tileName, key) {
-	        var src = 'images/textures/' + tileName + '.bmp';
-	        return _react2.default.createElement('img', { className: 'tileMenu__tile', src: src, key: key });
-	      }),
-	      _react2.default.createElement('div', { className: 'clear' })
-	    );
+	    return _react2.default.createElement('div', null);
 	  }
 	});
 
