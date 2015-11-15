@@ -7,4 +7,4 @@ node_js:
   - "iojs-v1.0.4"
 before_script:
   - npm install -g gulp
-script: npm run deploy
+script: npm run build
